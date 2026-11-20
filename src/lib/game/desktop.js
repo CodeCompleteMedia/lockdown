@@ -29,6 +29,7 @@ run <file>   execute a build
 find <text>  search names and paths
 gr_osview    open the system monitor
 chess        play chess (chess3d for the 3D board)
+calc         open the calculator
 clear        clear this window`;
 
 export function shell(line) {
@@ -39,6 +40,7 @@ export function shell(line) {
   if (cmd === 'gr_osview' || cmd === 'osview') return openOsview();
   if (cmd === 'chess') return openChess();
   if (cmd === 'chess3d') return openChess3D();
+  if (cmd === 'calc') return openCalc();
   if (cmd === 'clear') { ui.conCleared = game.logs.at(-1).id; return; }
   if (game.mode !== 'play') return log('no active session', 'e');
   if (cmd === 'pwd') return log(game.cwd.path);
@@ -88,6 +90,7 @@ export const openSys = () => ui.open('sysman');
 export const openOsview = () => ui.open('osview');
 export const openChess = () => { ui.open('chess'); refs.chessin?.focus(); };
 export const openChess3D = () => ui.open('chess3d');
+export const openCalc = () => { ui.open('calc'); refs.calc?.focus(); };
 export const toggleConsole = () => ui.shown('conwin') ? ui.close('conwin') : openConsole();
 export const toggleSys = () => ui.shown('sysman') ? ui.close('sysman') : openSys();
 
@@ -119,6 +122,7 @@ const MENUS = {
     null,
     ['Chess', openChess],
     ['Chess 3D', openChess3D],
+    ['Calculator', openCalc],
   ],
   selected: () => {
     const f = game.sel;

@@ -12,6 +12,7 @@
   import OsView from '#lib/components/OsView.svelte';
   import ChessWindow from '#lib/components/ChessWindow.svelte';
   import Chess3DWindow from '#lib/components/Chess3DWindow.svelte';
+  import Calculator from '#lib/components/Calculator.svelte';
   import Menu from '#lib/components/Menu.svelte';
   import Dialog from '#lib/components/Dialog.svelte';
 
@@ -35,6 +36,7 @@
 <OsView />
 <ChessWindow />
 <Chess3DWindow />
+<Calculator />
 
 <Menu />
 <Dialog />

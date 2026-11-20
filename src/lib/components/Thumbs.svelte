@@ -4,7 +4,7 @@
   import { toggleConsole, toggleSys } from '#lib/game/desktop.js';
 
   // Console and System always have a tile. Other windows get one while they are minimized.
-  const ICONS = [['main', 'fsnav', 'grid'], ['viewer', 'view', 'page'], ['find', 'Find', 'list'], ['osview', 'osview', 'bars'], ['chess', 'chess', 'board'], ['chess3d', 'chess 3D', 'board']];
+  const ICONS = [['main', 'fsnav', 'grid'], ['viewer', 'view', 'page'], ['find', 'Find', 'list'], ['osview', 'osview', 'bars'], ['chess', 'chess', 'board'], ['chess3d', 'chess 3D', 'board'], ['calc', 'calc', 'keys']];
   const icons = $derived(ICONS.filter(([id]) => ui.wins[id].open && ui.wins[id].min));
 </script>
 
@@ -57,6 +57,12 @@
     linear-gradient(90deg,#1600ff 55%,#0cff00 55%) 5px 22px/60px 9px no-repeat,
     linear-gradient(90deg,#00feff 20%,#1600ff 20% 34%,#bdb7a3 34%) 5px 38px/60px 9px no-repeat,#a8bcbb}
   .board{background:repeating-conic-gradient(#c9b9a4 0 25%,#6c5a48 0 50%) center/27px 27px}
+  .keys{background:
+    linear-gradient(#f6f4e2,#f6f4e2) 6px 5px/58px 10px no-repeat,
+    linear-gradient(#161616,#161616) 54px 20px/10px 100% no-repeat,
+    repeating-linear-gradient(90deg,#efdf7c 0 9px,transparent 9px 12px) 6px 20px/58px 100% no-repeat,
+    repeating-linear-gradient(#d8d2a4 0 3px,transparent 3px 10px) 0 17px/100% 100% no-repeat,#d8d2a4;
+    background-blend-mode:normal}
   svg{display:block;width:100%;height:100%}
   .cap{display:block;height:19px;border-top:1px solid #5e5e5e;box-shadow:inset 0 1px 0 #d4d4d4;
     font:12px/18px Helvetica,Arial,sans-serif;text-align:center}
