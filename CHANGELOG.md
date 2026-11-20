@@ -2,6 +2,12 @@
 
 Versions are `major.minor.bug`. The rules for choosing the next number are in `CLAUDE.md`.
 
+## 0.3.0 - 2026-11-19
+
+- Dialogs (log-in, help, about, and the win and lose screens) can be dragged by their title bar.
+- Chess: a text chess game against the computer, in its own window. Find it under Desktop > Chess, by typing `chess` in the console, or by opening `chess.sav` in Lindqvist's directory.
+- Chess 3D: a 3D board for the same game, played with the mouse. Moves made in either chess window appear in both. Find it under Desktop > Chess 3D, or type `3d` in the chess window.
+
 ## 0.2.0 - 2026-11-19
 
 - The version number is now always on screen: at the right of the navigator's status bar and on the log-in screen.

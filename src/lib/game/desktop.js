@@ -28,6 +28,7 @@ open <file>  open in the viewer / load a key
 run <file>   execute a build
 find <text>  search names and paths
 gr_osview    open the system monitor
+chess        play chess (chess3d for the 3D board)
 clear        clear this window`;
 
 export function shell(line) {
@@ -36,6 +37,8 @@ export function shell(line) {
   const [cmd, ...rest] = line.split(/\s+/), arg = rest.join(' ');
   if (cmd === 'help') return log(SHELL_HELP);
   if (cmd === 'gr_osview' || cmd === 'osview') return openOsview();
+  if (cmd === 'chess') return openChess();
+  if (cmd === 'chess3d') return openChess3D();
   if (cmd === 'clear') { ui.conCleared = game.logs.at(-1).id; return; }
   if (game.mode !== 'play') return log('no active session', 'e');
   if (cmd === 'pwd') return log(game.cwd.path);
@@ -83,6 +86,8 @@ whiteout    T-${fmt(game.time)}`;
 }
 export const openSys = () => ui.open('sysman');
 export const openOsview = () => ui.open('osview');
+export const openChess = () => { ui.open('chess'); refs.chessin?.focus(); };
+export const openChess3D = () => ui.open('chess3d');
 export const toggleConsole = () => ui.shown('conwin') ? ui.close('conwin') : openConsole();
 export const toggleSys = () => ui.shown('sysman') ? ui.close('sysman') : openSys();
 
@@ -111,6 +116,9 @@ const MENUS = {
     null,
     ['File System Navigator', () => ui.open('main')],
     ['Open Console', openConsole],
+    null,
+    ['Chess', openChess],
+    ['Chess 3D', openChess3D],
   ],
   selected: () => {
     const f = game.sel;

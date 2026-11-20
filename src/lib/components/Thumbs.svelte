@@ -4,7 +4,7 @@
   import { toggleConsole, toggleSys } from '#lib/game/desktop.js';
 
   // Console and System always have a tile. Other windows get one while they are minimized.
-  const ICONS = [['main', 'fsnav', 'grid'], ['viewer', 'view', 'page'], ['find', 'Find', 'list'], ['osview', 'osview', 'bars']];
+  const ICONS = [['main', 'fsnav', 'grid'], ['viewer', 'view', 'page'], ['find', 'Find', 'list'], ['osview', 'osview', 'bars'], ['chess', 'chess', 'board'], ['chess3d', 'chess 3D', 'board']];
   const icons = $derived(ICONS.filter(([id]) => ui.wins[id].open && ui.wins[id].min));
 </script>
 
@@ -56,6 +56,7 @@
     linear-gradient(90deg,#1600ff 30%,#f00 30% 36%,#0cff00 36%) 5px 6px/60px 9px no-repeat,
     linear-gradient(90deg,#1600ff 55%,#0cff00 55%) 5px 22px/60px 9px no-repeat,
     linear-gradient(90deg,#00feff 20%,#1600ff 20% 34%,#bdb7a3 34%) 5px 38px/60px 9px no-repeat,#a8bcbb}
+  .board{background:repeating-conic-gradient(#c9b9a4 0 25%,#6c5a48 0 50%) center/27px 27px}
   svg{display:block;width:100%;height:100%}
   .cap{display:block;height:19px;border-top:1px solid #5e5e5e;box-shadow:inset 0 1px 0 #d4d4d4;
     font:12px/18px Helvetica,Arial,sans-serif;text-align:center}

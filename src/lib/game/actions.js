@@ -54,6 +54,11 @@ export function openFile(f) {
     return;
   }
   sfx.open();
+  if (f.name === 'chess.sav') {          // Lindqvist's saved game starts the chess program
+    ui.open('chess'); refs.chessin?.focus();
+    if (!f.read) { markRead(f); log('chess: loaded ' + f.path); }
+    return;
+  }
   showViewer(f, f.type === 'bin' ? hexdump(f) : f.text);
   if (!f.read) { markRead(f); log('read ' + f.path); }
 }

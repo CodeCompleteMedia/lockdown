@@ -50,6 +50,8 @@ class Desktop {
     conwin: win(240, 180, 580),
     sysman: win(280, 130, 430),
     osview: win(150, 70, 400),
+    chess: win(330, 90, 350),
+    chess3d: win(700, 120, 470),
   });
   zTop = 20;
   menu = $state.raw(null);           // { key, items, anchor: the button it hangs from, below? }
