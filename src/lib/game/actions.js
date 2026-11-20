@@ -138,7 +138,8 @@ export function boot() {
   <p class="warn">Wing C has lost containment. Sterilant flood in 05:00. The bulkheads are sealed and you are on the wrong side of them.</p>
   <p>The security override is somewhere on this file system. It will not run without three staff <b>signature keys</b>, and of the four builds staged, only one is signed. The logs and the mail spool say which, and where the keys were left.</p>
   <p>Stay clear of the red <b>watchdog</b>. Inside its ring the clock runs three times as fast.</p>
-  ${HELP}`, 'Log In', () => {
+  ${HELP}
+  <p class="version">Lockdown v${__APP_VERSION__}</p>`, 'Log In', () => {
     initAudio(); sfx.open();
     game.mode = 'play'; engine.resetClock();
     engine.spawnWatchdog(nodes['/sys/sec/vault']);

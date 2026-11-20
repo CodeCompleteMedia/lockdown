@@ -65,7 +65,7 @@
       <div id="console" class="term inset" bind:this={con}>{#each game.logs as l (l.id)}<div class={l.cls}>{l.msg}</div>{/each}</div>
     </div>
   </div>
-  <div class="statusbar inset">Drag: look &nbsp;|&nbsp; W A S D: fly &nbsp;|&nbsp; R / F: climb / dive &nbsp;|&nbsp; Shift: boost &nbsp;|&nbsp; Click: select or fly to &nbsp;|&nbsp; Double-click / Enter: open or run</div>
+  <div class="statusbar inset"><span class="keys">Drag: look &nbsp;|&nbsp; W A S D: fly &nbsp;|&nbsp; R / F: climb / dive &nbsp;|&nbsp; Shift: boost &nbsp;|&nbsp; Click: select or fly to &nbsp;|&nbsp; Double-click / Enter: open or run</span><span class="version" title="Lockdown version">v{__APP_VERSION__}</span></div>
 </Window>
 
 <style>
@@ -106,7 +106,9 @@
   #info{font:12px "Courier New",monospace;font-weight:bold;line-height:1.45;min-height:74px;white-space:pre-wrap;word-break:break-all;background:var(--well);padding:4px 6px}
   .btnrow{display:grid;grid-template-columns:1fr 1fr;gap:7px}
   #console{flex:1;min-height:60px}
-  .statusbar{flex:none;margin:0 6px 6px;padding:3px 8px;font-size:11px;font-weight:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .statusbar{flex:none;display:flex;gap:12px;margin:0 6px 6px;padding:3px 8px;font-size:11px;font-weight:normal;white-space:nowrap}
+  .keys{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+  .version{flex:none;font-weight:bold}
 
   @media (max-width:760px){
     .body{flex-direction:column}

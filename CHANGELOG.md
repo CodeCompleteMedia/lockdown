@@ -2,6 +2,10 @@
 
 Versions are `major.minor.bug`. The rules for choosing the next number are in `CLAUDE.md`.
 
+## 0.2.0 - 2026-11-19
+
+- The version number is now always on screen: at the right of the navigator's status bar and on the log-in screen.
+
 ## 0.1.0 - 2026-11-19
 
 First tracked version.
