@@ -3,11 +3,18 @@ import { ROOT } from './fs.js';
 import { game, ui } from './state.svelte.js';
 import { keysDown } from './engine.js';
 import { activate, cancelTween, closeViewer, flyToDir, flyUp, overview } from './actions.js';
+import { mac } from './mac.svelte.js';
 
 const MOVE = ['KeyW', 'KeyA', 'KeyS', 'KeyD', 'KeyR', 'KeyF', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'];
 
 function onKeyDown(e) {
   if (e.target.tagName === 'INPUT') { if (e.code === 'Escape') e.target.blur(); return; }
+  // on the Macintosh the keyboard belongs to that machine, not the workstation
+  if (ui.monitor === 'left') {
+    if (e.repeat) return;
+    if (e.code === 'Escape') mac.escape(); else if (e.code === 'Enter' && mac.alert) mac.alert = null;
+    return;
+  }
   if (ui.dialog) { if (e.code === 'Enter' && !e.repeat) { e.preventDefault(); ui.dialogOk(); } return; }
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   if (MOVE.includes(e.code)) { e.preventDefault(); keysDown.add(e.code); if (game.mode === 'play') cancelTween(); return; }

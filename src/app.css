@@ -13,7 +13,7 @@
 html,body{height:100%;margin:0;overflow:hidden}
 body{
   font:bold 12px Helvetica,Arial,sans-serif;color:var(--ink);
-  background:#2f6b70 url(./lib/assets/irixBackgroundTexture.jpg);
+  background:#000;
   user-select:none;-webkit-user-select:none;
 }
 /* A window with the window manager's frame. The frame is 7px and is drawn outside the

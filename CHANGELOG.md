@@ -2,6 +2,12 @@
 
 Versions are `major.minor.bug`. The rules for choosing the next number are in `CLAUDE.md`.
 
+## 0.7.0 - 2026-11-19
+
+- A second monitor. Move the pointer to the left edge of the screen and click the tab that appears to slide over to an early Macintosh; the tab on its right edge slides back.
+- The Macintosh has its own desktop, menu bar, icons and windows, which can be dragged, resized, zoomed, rolled up and closed.
+- The Macintosh's hard disk is a file system of its own: folders that open in place, notes to read, pictures to look at, and programs that will not start.
+
 ## 0.6.0 - 2026-11-19
 
 - More pictures are tucked away in directories all over the file system.

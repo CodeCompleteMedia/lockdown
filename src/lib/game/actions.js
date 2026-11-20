@@ -3,11 +3,7 @@ import { nodes, ROOT, RUN, hexdump } from './fs.js';
 import { game, ui, refs, log, fmt } from './state.svelte.js';
 import { sfx, initAudio, setSoundOn } from './audio.js';
 import { stats } from './stats.js';
-
-// The pictures behind image files: every image in src/lib/assets, by file name. These are
-// URLs, so a picture is only downloaded when its file is opened.
-const IMAGES = Object.fromEntries(Object.entries(import.meta.glob('../assets/*.{png,jpg,gif}', { eager: true, query: '?url', import: 'default' }))
-  .map(([path, url]) => [path.split('/').pop(), url]));
+import { IMAGES } from './images.js';
 
 let engine = null;
 export function attachEngine(e) { engine = e; }

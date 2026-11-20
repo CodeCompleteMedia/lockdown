@@ -56,6 +56,7 @@ class Desktop {
     imgview: win(420, 60, 330),
   });
   zTop = 20;
+  monitor = $state('right');         // which of the two monitors is on screen: 'right' is the workstation, 'left' the Macintosh
   menu = $state.raw(null);           // { key, items, anchor: the button it hangs from, below? }
   dialog = $state.raw(null);         // { title, html, btn, action }
   viewer = $state.raw({ title: 'view', text: '' });
