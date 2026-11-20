@@ -1,0 +1,98 @@
+/* Shared look of the desktop: bevelled windows, title bars, buttons, terminals.
+   Anything specific to one component lives in that component's <style>. */
+:root{
+  /* widget greys */
+  --face:#c1c1c1; --hi:#ececec; --lo:#737373; --dk:#313131; --press:#adadad; --well:#d6d6d6;
+  /* window manager frame and title bar: warm putty */
+  --frame:#c3bdb0; --frame-hi:#e6dfd6; --frame-lo:#857e76;
+  --title:#bdb8a2; --title-hi:#e0dacc; --title-lo:#888179;
+  --ink:#000;
+  --label:italic bold 13px Helvetica,Arial,sans-serif;   /* buttons, menus, toolchest */
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;overflow:hidden}
+body{
+  font:bold 12px Helvetica,Arial,sans-serif;color:var(--ink);
+  background:#2f6b70 url(./lib/assets/irixBackgroundTexture.jpg);
+  user-select:none;-webkit-user-select:none;
+}
+/* A window with the window manager's frame. The frame is 7px and is drawn outside the
+   box so it takes no layout space: a sunken inner edge (the border), a 4px band, a raised
+   outer edge and a black hairline (the shadows, innermost first). */
+.win{
+  position:absolute;display:flex;flex-direction:column;
+  background:var(--face);
+  border:1px solid;border-color:var(--frame-lo) var(--frame-hi) var(--frame-hi) var(--frame-lo);
+  box-shadow:0 0 0 4px var(--frame),-1px -1px 0 4px var(--frame-hi),1px 1px 0 4px var(--frame-lo),0 0 0 6px #000;
+}
+/* the resize-corner notches that cross the frame 31px in from each corner */
+.win::before{
+  content:"";position:absolute;inset:-7px;pointer-events:none;
+  --v:linear-gradient(90deg,var(--frame-lo) 50%,var(--frame-hi) 50%);
+  --h:linear-gradient(var(--frame-lo) 50%,var(--frame-hi) 50%);
+  background:
+    var(--v) left 31px top 1px/2px 6px,var(--v) right 31px top 1px/2px 6px,
+    var(--v) left 31px bottom 1px/2px 6px,var(--v) right 31px bottom 1px/2px 6px,
+    var(--h) left 1px top 31px/6px 2px,var(--h) left 1px bottom 31px/6px 2px,
+    var(--h) right 1px top 31px/6px 2px,var(--h) right 1px bottom 31px/6px 2px;
+  background-repeat:no-repeat;
+}
+/* A frameless raised panel: the toolchest and its menus. */
+.panel{
+  position:absolute;display:flex;flex-direction:column;
+  background:var(--face);
+  border:1px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);
+  outline:1px solid #000;
+}
+.titlebar{
+  display:flex;align-items:stretch;height:25px;flex:none;
+  background:var(--title);color:#000;
+  border:1px solid #000;cursor:default;touch-action:none;
+}
+.titlebar .t{
+  flex:1;padding:0 11px;font:italic 14px/21px Helvetica,Arial,sans-serif;
+  border:1px solid;border-color:var(--title-hi) var(--title-lo) var(--title-lo) var(--title-hi);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.titlebar .b{
+  width:25px;flex:none;position:relative;
+  border:1px solid;border-color:var(--title-hi) var(--title-lo) var(--title-lo) var(--title-hi);
+}
+.titlebar .b::after{
+  content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  border:1px solid #000;background:var(--title-hi);box-shadow:1px 1px 0 #000;
+}
+.titlebar .b.menu::after{width:15px;height:4px}
+.titlebar .b.min::after{width:4px;height:4px}
+.titlebar .b.max::after{width:13px;height:14px;background:var(--title)}
+
+button{
+  font:var(--label);color:var(--ink);background:var(--face);
+  border:2px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);
+  padding:5px 10px;cursor:pointer;outline:1px solid var(--dk);outline-offset:0;
+}
+button:active,button.down{border-color:var(--lo) var(--hi) var(--hi) var(--lo);background:var(--press);padding:6px 9px 4px 11px}
+button:disabled{color:#7a7a7a;cursor:default}
+button.default{box-shadow:0 0 0 3px var(--face),0 0 0 5px var(--lo)}
+
+.inset{border:2px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo)}
+
+.term{overflow-y:auto;background:#020806;color:#39e08a;
+  font:11px/1.35 "Courier New",monospace;font-weight:bold;padding:4px 6px;white-space:pre-wrap;user-select:text;-webkit-user-select:text}
+.term .w{color:#ffd23a} .term .e{color:#ff5a6e} .term .k{color:#fff}
+
+input[type=text]{flex:1;min-width:0;font:bold 12px "Courier New",monospace;color:#111;background:#f3f0e4;
+  border:2px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo);padding:4px 6px;outline:none;
+  user-select:text;-webkit-user-select:text}
+.row{display:flex;gap:8px;align-items:center;padding:8px 8px 0}
+.foot{display:flex;justify-content:flex-end;gap:10px;padding:4px 10px 10px}
+.sw{display:inline-block;width:10px;height:10px;margin-right:4px;outline:1px solid #000;vertical-align:-1px}
+
+/* dialog bodies are injected HTML, so their content is styled from here */
+#dlgbody h2{margin:0 0 8px;font:bold 15px "Courier New",monospace;letter-spacing:1px}
+#dlgbody p{margin:0 0 9px}
+#dlgbody .warn{color:#8c0010;font-weight:bold}
+#dlgbody table{border-collapse:collapse;font-size:12px;margin:4px 0 8px}
+#dlgbody td{padding:1px 12px 1px 0;vertical-align:top}
+#dlgbody td:first-child{font:bold 12px "Courier New",monospace;white-space:nowrap}
+#dlgbody .keyrow{display:flex;gap:10px;flex-wrap:wrap;font-size:11px;margin-bottom:8px}
