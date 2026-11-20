@@ -5,7 +5,9 @@
   import { sfx } from '#lib/game/audio.js';
   import { toggleWindowMenu } from '#lib/game/desktop.js';
 
-  let { id, title, minW = 240, minH = 140, children } = $props();
+  // aspect, when given, is the width/height the content area keeps while the window is resized.
+  let { id, title, minW = 240, minH = 140, aspect = null, children } = $props();
+  const FRAME_W = 2, FRAME_H = 27;      // what the borders and title bar add around the content
   const win = $derived(ui.wins[id]);
   const style = $derived.by(() => {
     const r = win.rect;
@@ -36,10 +38,16 @@
       r.y = Math.max(0, Math.min(innerHeight - 30, g.y + dy));
       return;
     }
-    if (g.dir.includes('e')) r.w = Math.max(minW, g.w + dx);
-    if (g.dir.includes('w')) { r.w = Math.max(minW, g.w - dx); r.x = g.x + g.w - r.w; }
-    if (g.dir.includes('s')) r.h = Math.max(minH, g.h + dy);
-    if (g.dir.includes('n')) { r.h = Math.max(minH, Math.min(g.h - dy, g.y + g.h)); r.y = g.y + g.h - r.h; }
+    let w = g.w, h = g.h;
+    if (g.dir.includes('e')) w = Math.max(minW, g.w + dx);
+    if (g.dir.includes('w')) w = Math.max(minW, g.w - dx);
+    if (g.dir.includes('s')) h = Math.max(minH, g.h + dy);
+    if (g.dir.includes('n')) h = Math.max(minH, Math.min(g.h - dy, g.y + g.h));
+    // with a locked shape, the sides and corners set the width and the top and bottom set the height
+    if (aspect) { if (/[ew]/.test(g.dir)) h = (w - FRAME_W) / aspect + FRAME_H; else w = (h - FRAME_H) * aspect + FRAME_W; }
+    r.w = w; r.h = h;
+    if (g.dir.includes('w')) r.x = g.x + g.w - w;
+    if (g.dir.includes('n')) r.y = g.y + g.h - h;
   }
   const drop = () => { grab = null; };
   const act = fn => () => { ui.closeMenu(); sfx.click(); fn(); };

@@ -3,10 +3,11 @@ import { nodes, ROOT, RUN, hexdump } from './fs.js';
 import { game, ui, refs, log, fmt } from './state.svelte.js';
 import { sfx, initAudio, setSoundOn } from './audio.js';
 import { stats } from './stats.js';
-import zebraGirl from '#lib/assets/zebraGirl.jpg';
 
-// the pictures behind image files, by file name
-const IMAGES = { 'zebraGirl.jpg': zebraGirl };
+// The pictures behind image files: every image in src/lib/assets, by file name. These are
+// URLs, so a picture is only downloaded when its file is opened.
+const IMAGES = Object.fromEntries(Object.entries(import.meta.glob('../assets/*.{png,jpg,gif}', { eager: true, query: '?url', import: 'default' }))
+  .map(([path, url]) => [path.split('/').pop(), url]));
 
 let engine = null;
 export function attachEngine(e) { engine = e; }
@@ -64,7 +65,7 @@ export function openFile(f) {
     return;
   }
   if (f.type === 'img') {
-    ui.image = { title: f.name, src: IMAGES[f.name] };
+    ui.image = { title: f.name, src: IMAGES[f.asset] };
     ui.open('imgview');
     if (!f.read) { markRead(f); log('read ' + f.path); }
     return;
@@ -133,6 +134,7 @@ export const HELP = `<table>
   <span><i class="sw" style="background:#ffd23a"></i>signature key</span>
   <span><i class="sw" style="background:#ff4466"></i>executable</span>
   <span><i class="sw" style="background:#8a7fc0"></i>binary</span>
+  <span><i class="sw" style="background:#f2f2f2"></i>image</span>
 </div>`;
 
 // A dialog that stops the clock while it is up.

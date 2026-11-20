@@ -2,6 +2,12 @@
 
 Versions are `major.minor.bug`. The rules for choosing the next number are in `CLAUDE.md`.
 
+## 0.6.0 - 2026-11-19
+
+- More pictures are tucked away in directories all over the file system.
+- Image files now appear in the colour key under Help.
+- The image viewer keeps the picture's proportions when you resize it.
+
 ## 0.5.0 - 2026-11-19
 
 - Something new is hidden in the file system for those who go looking.

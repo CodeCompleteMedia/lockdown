@@ -172,8 +172,21 @@ add('/usr/staff/varga', 'memo.txt', 'txt', 3,
    thorough.`);
 add('/usr/staff/varga', 'roster.dat', 'bin', 20);
 
-// left over from the workstation's demo disk; the picture itself is looked up by name in actions.js
-add('/usr/demos', 'zebraGirl.jpg', 'img', 234);
+// Pictures the staff have squirrelled away around the system. `asset` names the file in
+// src/lib/assets that the image viewer shows.
+const picture = (path, name, kb, asset) => add(path, name, 'img', kb, '', { asset });
+picture('/usr/demos', 'zebraGirl.jpg', 234, 'zebraGirl.jpg');
+picture('/sys/sec/vault', 'zebraGirl.hires.jpg', 289, 'zebraGirl_superHiRes.png');
+picture('/lab/cryo', 'zebraGirl_whiteout.jpg', 73, 'zebraGirl_wht.png');
+picture('/usr/staff/lindqvist', 'jubilee.gif', 250, 'pinup_02.png');
+picture('/lab/hydro', 'beachball.jpg', 99, 'pinup_03.png');
+picture('/usr/spool', 'postcard.jpg', 119, 'pinup_04.png');
+picture('/tmp', 'wallpaper.jpg', 53, 'pinup_05.png');
+picture('/sys/hvac', 'rugdept.gif', 216, 'pinup_06.png');
+picture('/lab/specimens', 'bedrock.jpg', 112, 'pinup_07.png');
+picture('/sys/sec/audit', 'evidence_07.jpg', 49, 'pinup_08.png');
+picture('/logs/shift_b', 'galley.jpg', 151, 'pinup_09.png');
+picture('/usr/staff/varga', 'sketch.gif', 129, 'pinup_10.png');
 
 add('/lab/cryo', 'tank_temps.log', 'txt', 8,
 `TANK   SET    READ
