@@ -5,19 +5,6 @@
   // works: arrows, the track, the thumb, and the mouse wheel.
   import { mac, MENUBAR } from '#lib/game/mac.svelte.js';
   import { resized } from '#lib/ui-geometry.js';
-  import close from '#lib/assets/mac/close.png';
-  import zoom from '#lib/assets/mac/zoom.png';
-  import up from '#lib/assets/mac/up.png';
-  import down from '#lib/assets/mac/down.png';
-  import upOn from '#lib/assets/mac/upon.png';
-  import downOn from '#lib/assets/mac/downon.png';
-  import thumbImg from '#lib/assets/mac/thumb.png';
-  import track from '#lib/assets/mac/track.png';
-  import left from '#lib/assets/mac/left.png';
-  import right from '#lib/assets/mac/right.png';
-  import growOn from '#lib/assets/mac/grow.png';
-  import growOff from '#lib/assets/mac/growblur.png';
-
   // header: the strip under the title bar (item counts, column names). plain: a picture
   // window, with no scroll bars. aspect: the width/height its content keeps when resized.
   let { id, header = null, plain = false, aspect = null, children } = $props();
@@ -41,8 +28,9 @@
     const g = grab, dx = e.clientX - g.mx, dy = e.clientY - g.my;
     if (g.dir) Object.assign(win.rect, resized(g, dx, dy, { minW: 180, minH: 110, top: MENUBAR, aspect, frameW: FRAME_W, frameH: FRAME_H }));
     else {
-      win.rect.x = Math.max(60 - g.w, Math.min(innerWidth - 60, g.x + dx));
-      win.rect.y = Math.max(MENUBAR, Math.min(innerHeight - 30, g.y + dy));
+      const screen = mac.size();
+      win.rect.x = Math.max(60 - g.w, Math.min(screen.w - 60, g.x + dx));
+      win.rect.y = Math.max(MENUBAR, Math.min(screen.h - 30, g.y + dy));
     }
   }
   const drop = () => { grab = null; };
@@ -56,7 +44,8 @@
   function measure() { if (!content) return; top = content.scrollTop; view = content.clientHeight; max = Math.max(0, content.scrollHeight - view); }
   $effect(() => {
     if (!content || !inner) return;
-    const ro = new ResizeObserver(measure); ro.observe(content); ro.observe(inner);
+    // the observer must come from the window the content is in, which may be the second display's
+    const ro = new (content.ownerDocument.defaultView.ResizeObserver)(measure); ro.observe(content); ro.observe(inner);
     return () => ro.disconnect();
   });
   const scrollBy = d => { content.scrollTop += d; };
@@ -68,6 +57,11 @@
   function page(e) { const t = e.currentTarget.querySelector('.thumb').getBoundingClientRect(); scrollBy((e.clientY < t.top ? -1 : 1) * (view - LINE)); }
 </script>
 
+<!-- A scroll arrow, pointing up unless turned; filled when there is something to scroll. -->
+{#snippet arrow(turn, on = false)}
+  <svg width="14" height="14" viewBox="0 0 14 14" style="transform:rotate({turn}deg)"><path d="M7 2.500 11.500 7.500h-2v4h-5v-4h-2z" fill={on ? '#a4a7d8' : 'none'} stroke={on ? '#343555' : '#777'}/></svg>
+{/snippet}
+
 <!-- svelte-ignore a11y_no_static_element_interactions, a11y_click_events_have_key_events -->
 <div class="mwin" class:open={win.open} class:focused class:shade={win.shade} class:zoom={win.zoom} {style} onpointerdowncapture={() => mac.front(id)}>
   {#if !win.shade}{#each HANDLES as dir (dir)}
@@ -76,8 +70,8 @@
   <div class="title" onpointerdown={e => press(e)} onpointermove={move} onpointerup={drop} onpointercancel={drop} ondblclick={e => { if (!e.target.closest('.box')) mac.shade(id); }}>
     {#if focused}
       <i class="stripes"></i>
-      <img class="box l" src={close} alt="Close" title="Close" draggable="false" onclick={() => mac.close(id)}>
-      <img class="box r" src={zoom} alt="Zoom" title="Zoom" draggable="false" onclick={() => mac.zoom(id)}>
+      <svg class="box l" width="13" height="12" viewBox="0 0 13 12" shape-rendering="crispEdges" onclick={() => mac.close(id)}><title>Close</title><rect width="13" height="12" fill="#eee"/><rect x="1.5" y="1.5" width="9" height="9" fill="#a5a5b0" stroke="#333355"/><path d="M2.5 9.5v-7h7" fill="none" stroke="#d6d6ea"/></svg>
+      <svg class="box r" width="13" height="12" viewBox="0 0 13 12" shape-rendering="crispEdges" onclick={() => mac.zoom(id)}><title>Zoom</title><rect width="13" height="12" fill="#eee"/><rect x="1.5" y="1.5" width="9" height="9" fill="#a5a5b0" stroke="#333355"/><path d="M2.5 9.5v-7h7" fill="none" stroke="#d6d6ea"/><path d="M2 6.5h4.500v-4.500" fill="none" stroke="#333355"/></svg>
     {/if}
     <span>{win.title}</span>
   </div>
@@ -90,17 +84,19 @@
         <div class="content" bind:this={content} onscroll={measure}><div bind:this={inner}>{@render children()}</div></div>
         <div class="bar v">
           {#if focused && max > 0}
-            <img src={upOn} alt="Scroll up" draggable="false" onclick={() => scrollBy(-LINE * 2)}>
-            <div class="track" style="background-image:url({track})" onpointerdown={page}>
-              <img class="thumb" src={thumbImg} alt="" draggable="false" style="top:{travel * top / max}px" onpointerdown={thumbDown} onpointermove={thumbMove} onpointerup={() => { thumbGrab = null; }} onpointercancel={() => { thumbGrab = null; }}>
+            <div class="cell on" title="Scroll up" onclick={() => scrollBy(-LINE * 2)}>{@render arrow(0, true)}</div>
+            <div class="track" onpointerdown={page}>
+              <div class="thumb" style="top:{travel * top / max}px" onpointerdown={thumbDown} onpointermove={thumbMove} onpointerup={() => { thumbGrab = null; }} onpointercancel={() => { thumbGrab = null; }}></div>
             </div>
-            <img src={downOn} alt="Scroll down" draggable="false" onclick={() => scrollBy(LINE * 2)}>
-          {:else if focused}<img src={up} alt="" draggable="false"><img src={down} alt="" draggable="false">{/if}
+            <div class="cell on" title="Scroll down" onclick={() => scrollBy(LINE * 2)}>{@render arrow(180, true)}</div>
+          {:else if focused}<div class="cell">{@render arrow(0)}</div><div class="cell">{@render arrow(180)}</div>{/if}
         </div>
       </div>
       <div class="bottom">
-        <div class="bar h">{#if focused}<img src={left} alt="" draggable="false"><img src={right} alt="" draggable="false">{/if}</div>
-        <img class="grow" src={focused ? growOn : growOff} alt="" draggable="false" onpointerdown={e => press(e, 'se')} onpointermove={move} onpointerup={drop} onpointercancel={drop}>
+        <div class="bar h">{#if focused}<div class="cell">{@render arrow(270)}</div><div class="cell">{@render arrow(90)}</div>{/if}</div>
+        <div class="grow" onpointerdown={e => press(e, 'se')} onpointermove={move} onpointerup={drop} onpointercancel={drop}>
+          <svg width="14" height="14" viewBox="0 0 14 14" shape-rendering="crispEdges"><rect x="5.500" y="5.500" width="6" height="6" fill={focused ? '#a5a5b0' : '#fff'} stroke="#333355"/><rect x="2.500" y="2.500" width="5" height="5" fill={focused ? '#dcdcee' : '#fff'} stroke="#333355"/></svg>
+        </div>
       </div>
     {/if}
   {/if}
@@ -130,13 +126,20 @@
   .bar{flex:none;display:flex;justify-content:space-between;background:#fff}
   .focused .bar{background:#eee}
   .bar.v{width:15px;flex-direction:column;border-left:1px solid #000}
-  .bar.v > img{cursor:pointer}
-  .track{flex:1;position:relative;image-rendering:pixelated}
-  .thumb{position:absolute;left:0;touch-action:none}
+  /* arrow cells: a rule divides each from the track */
+  .cell{flex:none;width:14px;height:14px}
+  .bar.v .cell:first-child{border-bottom:1px solid #777} .bar.v .cell:last-child{border-top:1px solid #777}
+  .bar.h .cell:first-child{border-right:1px solid #777} .bar.h .cell:last-child{border-left:1px solid #777}
+  .bar .cell.on{border-color:#000;cursor:pointer}
+  /* the track is a light grey with a sprinkling of dark dots; the thumb is ribbed */
+  .track{flex:1;position:relative;background:#ddd url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='2'%3E%3Crect x='1' width='1' height='1' fill='%23777'/%3E%3Crect x='3' y='1' width='1' height='1' fill='%23777'/%3E%3C/svg%3E")}
+  .thumb{position:absolute;left:0;width:14px;height:16px;box-sizing:border-box;border:1px solid #333355;touch-action:none;
+    background:repeating-linear-gradient(#63628e 0 1px,#d1d0fb 1px 2px) 3px 4px/6px 8px no-repeat,#a5a8cb}
   .bar.h{flex:1;height:14px}
   .bottom{flex:none;display:flex;border-top:1px solid #000}
-  .grow{flex:none;width:15px;height:14px;padding-left:1px;background:#000;box-sizing:border-box;cursor:nwse-resize;touch-action:none}
-  img{display:block}
+  .grow{flex:none;width:14px;height:14px;border-left:1px solid #000;background:#fff;cursor:nwse-resize;touch-action:none}
+  .focused .grow{background:#eee}
+  svg{display:block}
 
   /* the edges resize too, as on the workstation; the grow box is the visible way */
   .rz{position:absolute;touch-action:none}

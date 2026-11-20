@@ -2,6 +2,14 @@
 
 Versions are `major.minor.bug`. The rules for choosing the next number are in `CLAUDE.md`.
 
+## 0.8.0 - 2026-11-19
+
+- The Macintosh desktop is redrawn: a new background pattern, and every icon, button and scroll bar drawn fresh instead of taken from a photograph.
+- Its disk icon is now named Macintosh HD, matching its window.
+- The desktop pattern stays crisp at any zoom level instead of shimmering.
+- Two real displays: the Macintosh can be put in a window of its own on a second monitor, from Desktop > Macintosh On Second Display, or from the small tab at the screen edge when a second display is detected.
+- Full Screen is in the Desktop menu and in the Macintosh's Special menu.
+
 ## 0.7.0 - 2026-11-19
 
 - A second monitor. Move the pointer to the left edge of the screen and click the tab that appears to slide over to an early Macintosh; the tab on its right edge slides back.

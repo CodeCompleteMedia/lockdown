@@ -4,6 +4,7 @@ import { ROOT, nodeList, TYPES, dirPath, search, resolve } from './fs.js';
 import { game, ui, refs, log, fmt } from './state.svelte.js';
 import { sfx } from './audio.js';
 import { stats } from './stats.js';
+import { toggleSecondDisplay, toggleFullScreen } from '#lib/second-display.js';
 import { select, openFile, execFile, markRead, flyToDir, flyHome, flyUp, overview, inPlay, toggleSound, showHelp, pausedDialog } from './actions.js';
 
 /* -------------------------------------------------------------------- find */
@@ -120,6 +121,8 @@ const MENUS = {
     null,
     ['File System Navigator', () => ui.open('main')],
     ['Open Console', openConsole],
+    [ui.dual ? 'Bring The Macintosh Back' : 'Macintosh On Second Display', toggleSecondDisplay],
+    ['Full Screen', () => toggleFullScreen(document.body)],
     null,
     ['Chess', openChess],
     ['Chess 3D', openChess3D],

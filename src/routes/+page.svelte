@@ -20,14 +20,17 @@
   import Menu from '#lib/components/Menu.svelte';
   import Dialog from '#lib/components/Dialog.svelte';
 
-  onMount(installKeyboard);
+  import { watchDisplays } from '#lib/second-display.js';
+
+  onMount(() => { const keys = installKeyboard(), displays = watchDisplays(); return () => { keys(); displays(); }; });
 </script>
 
 <svelte:head><title>LOCKDOWN :: fsnav</title></svelte:head>
 
 <!-- Two monitors side by side; only one is on screen, and the stage slides between them. -->
-<div id="stage" class:left={ui.monitor === 'left'}>
-  <MacDesktop />
+<div id="stage" class:left={ui.monitor === 'left' && !ui.dual}>
+  <!-- when the Macintosh has a display of its own, it is drawn there instead (see second-display.js) -->
+  {#if !ui.dual}<MacDesktop />{/if}
   <div id="irix">
     <div id="deskcol">
       <Toolchest />

@@ -15,6 +15,10 @@ class Mac {
   alert = $state(null);          // text of the alert box, when one is up
   onOpen = null;                 // what File > Open does for the current selection
   zTop = 1; made = 0;
+  screenEl = null;               // the Macintosh's screen element, wherever it is being drawn
+
+  // The size of the Macintosh's screen. It may be in a second window, so never the main window's size.
+  size() { const r = this.screenEl?.getBoundingClientRect(); return { w: r?.width || innerWidth, h: r?.height || innerHeight }; }
 
   front(id) { this.wins[id].z = ++this.zTop; this.focus = id; }
   close(id) {
@@ -39,7 +43,7 @@ class Mac {
   show(id, make) {
     if (!this.wins[id]) {
       const n = this.made++ % 8, w = make();
-      w.rect.h = Math.min(w.rect.h, innerHeight - 70);
+      w.rect.h = Math.min(w.rect.h, this.size().h - 70);
       this.wins[id] = { open: true, shade: false, zoom: false, z: 1, ...w, rect: { x: 70 + n * 26, y: 46 + n * 22, ...w.rect } };
     }
     this.wins[id].open = true; this.wins[id].shade = false; this.front(id);
@@ -58,7 +62,7 @@ class Mac {
       : `The document “${node.name}” could not be opened, because the application program that created it could not be found.`;
   }
 }
-// The disk's own window opens tall, like the one in the reference; set by MacDesktop.
+// The disk's own window opens tall; MacDesktop says which folder that is.
 let ROOT_SIZED = null;
 export const tallWindowFor = node => { ROOT_SIZED = node; };
 
