@@ -13,6 +13,7 @@
   import ChessWindow from '#lib/components/ChessWindow.svelte';
   import Chess3DWindow from '#lib/components/Chess3DWindow.svelte';
   import Calculator from '#lib/components/Calculator.svelte';
+  import ImageViewer from '#lib/components/ImageViewer.svelte';
   import Menu from '#lib/components/Menu.svelte';
   import Dialog from '#lib/components/Dialog.svelte';
 
@@ -37,6 +38,7 @@
 <ChessWindow />
 <Chess3DWindow />
 <Calculator />
+<ImageViewer />
 
 <Menu />
 <Dialog />

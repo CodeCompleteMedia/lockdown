@@ -53,11 +53,13 @@ class Desktop {
     chess: win(330, 90, 350),
     chess3d: win(700, 120, 470),
     calc: win(150, 300, 240),
+    imgview: win(420, 60, 330),
   });
   zTop = 20;
   menu = $state.raw(null);           // { key, items, anchor: the button it hangs from, below? }
   dialog = $state.raw(null);         // { title, html, btn, action }
   viewer = $state.raw({ title: 'view', text: '' });
+  image = $state.raw({ title: 'image', src: '' });
   findQ = $state('');
   findRes = $state.raw([]);
   findNote = $state('Type part of a name or path.');

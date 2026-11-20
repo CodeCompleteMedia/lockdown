@@ -4,7 +4,7 @@
   import { toggleConsole, toggleSys } from '#lib/game/desktop.js';
 
   // Console and System always have a tile. Other windows get one while they are minimized.
-  const ICONS = [['main', 'fsnav', 'grid'], ['viewer', 'view', 'page'], ['find', 'Find', 'list'], ['osview', 'osview', 'bars'], ['chess', 'chess', 'board'], ['chess3d', 'chess 3D', 'board'], ['calc', 'calc', 'keys']];
+  const ICONS = [['main', 'fsnav', 'grid'], ['viewer', 'view', 'page'], ['find', 'Find', 'list'], ['osview', 'osview', 'bars'], ['chess', 'chess', 'board'], ['chess3d', 'chess 3D', 'board'], ['calc', 'calc', 'keys'], ['imgview', 'image', 'page']];
   const icons = $derived(ICONS.filter(([id]) => ui.wins[id].open && ui.wins[id].min));
 </script>
 

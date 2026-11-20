@@ -65,6 +65,7 @@ export function shell(line) {
   if (cmd === 'run') { select(f); return execFile(f); }
   if (f.type === 'key') return log(f.name + ': key image. Use "open" to load it.', 'w');
   if (f.type === 'bin') return log(`${f.name}: binary data, ${f.kb} KB`, 'w');
+  if (f.type === 'img') return log(`${f.name}: image data, ${f.kb} KB. Use "open" to view it.`, 'w');
   log(f.text); markRead(f); stats.iget++;
 }
 export function openConsole() {

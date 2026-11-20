@@ -3,6 +3,10 @@ import { nodes, ROOT, RUN, hexdump } from './fs.js';
 import { game, ui, refs, log, fmt } from './state.svelte.js';
 import { sfx, initAudio, setSoundOn } from './audio.js';
 import { stats } from './stats.js';
+import zebraGirl from '#lib/assets/zebraGirl.jpg';
+
+// the pictures behind image files, by file name
+const IMAGES = { 'zebraGirl.jpg': zebraGirl };
 
 let engine = null;
 export function attachEngine(e) { engine = e; }
@@ -57,6 +61,12 @@ export function openFile(f) {
   if (f.name === 'chess.sav') {          // Lindqvist's saved game starts the chess program
     ui.open('chess'); refs.chessin?.focus();
     if (!f.read) { markRead(f); log('chess: loaded ' + f.path); }
+    return;
+  }
+  if (f.type === 'img') {
+    ui.image = { title: f.name, src: IMAGES[f.name] };
+    ui.open('imgview');
+    if (!f.read) { markRead(f); log('read ' + f.path); }
     return;
   }
   showViewer(f, f.type === 'bin' ? hexdump(f) : f.text);

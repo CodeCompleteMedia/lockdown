@@ -6,7 +6,7 @@ const rnd = n => Math.floor(Math.random() * n);
 const pick = a => a[rnd(a.length)];
 const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = rnd(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
-const PATHS = ['/', '/usr', '/usr/staff', '/usr/staff/okafor', '/usr/staff/lindqvist', '/usr/staff/varga', '/usr/spool',
+const PATHS = ['/', '/usr', '/usr/staff', '/usr/staff/okafor', '/usr/staff/lindqvist', '/usr/staff/varga', '/usr/spool', '/usr/demos',
   '/lab', '/lab/cryo', '/lab/hydro', '/lab/specimens',
   '/sys', '/sys/sec', '/sys/sec/vault', '/sys/sec/audit', '/sys/daemons', '/sys/hvac',
   '/logs', '/logs/shift_a', '/logs/shift_b', '/tmp'];
@@ -35,6 +35,7 @@ const TYPES = {
   key: { label: 'signature key', color: 0xffd23a },
   cmd: { label: 'executable', color: 0xff4466 },
   bin: { label: 'binary data', color: 0x8a7fc0 },
+  img: { label: 'image', color: 0xf2f2f2 },
 };
 function add(path, name, type, kb, text, extra = {}) {
   nodes[path].files.push({ name, type, kb, text, dir: nodes[path], path: (path === '/' ? '' : path) + '/' + name, ...extra });
@@ -170,6 +171,9 @@ add('/usr/staff/varga', 'memo.txt', 'txt', 3,
 3. watchdogd is not your enemy. It is just very
    thorough.`);
 add('/usr/staff/varga', 'roster.dat', 'bin', 20);
+
+// left over from the workstation's demo disk; the picture itself is looked up by name in actions.js
+add('/usr/demos', 'zebraGirl.jpg', 'img', 234);
 
 add('/lab/cryo', 'tank_temps.log', 'txt', 8,
 `TANK   SET    READ

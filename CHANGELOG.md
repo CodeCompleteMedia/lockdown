@@ -2,6 +2,11 @@
 
 Versions are `major.minor.bug`. The rules for choosing the next number are in `CLAUDE.md`.
 
+## 0.5.0 - 2026-11-19
+
+- Something new is hidden in the file system for those who go looking.
+- Image files can be opened, in a viewer window of their own.
+
 ## 0.4.0 - 2026-11-19
 
 - Calculator: a scientific calculator window with trig, logs, powers, roots, factorial and degree/radian modes. Find it under Desktop > Calculator, or type `calc` in the console.
