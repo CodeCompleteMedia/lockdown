@@ -1,6 +1,7 @@
 // The Macintosh's disk: a tree of folders and files. Pure data.
 // A file's `open` says what happens when it is opened: { text }, { image } (a file name in
-// src/lib/assets), { anim } or nothing, in which case the Finder apologises.
+// src/lib/assets), { anim }, { note } (text written at the moment it is opened, see
+// mac.svelte.js) or nothing, in which case the Finder apologises.
 
 const K = { app: 'application program', txt: 'SimpleText document', jpg: 'JPEG Image', cp: 'control panel', file: 'file' };
 const dir = (name, size, children) => ({ name, size, kind: 'folder', children });
@@ -12,7 +13,7 @@ const app = (name, size) => file(name, size, K.app);
 export const HD = dir('Macintosh HD', 0, [
   dir('Adobe Photoshop 3.0', 9192, [
     app('Adobe Photoshop™ 3.0', 6201),
-    dir('Plug-ins', 2610, [dir('Acquire/Export', 412, [file('Quick Edit', 96, K.file), file('TWAIN Acquire', 316, K.file)]), dir('Filters', 2198, [file('Gaussian Blur', 64, K.file), file('Lens Flare', 88, K.file), file('Unsharp Mask', 71, K.file)])]),
+    dir('Plug-ins', 2610, [dir('Acquire/Export', 412, [file('Quick Edit', 96, K.file), file('TWAIN Acquire', 316, K.file), file('Panel Memo', 2, K.txt, { note: 'interlock' })]), dir('Filters', 2198, [file('Gaussian Blur', 64, K.file), file('Lens Flare', 88, K.file), file('Unsharp Mask', 71, K.file)])]),
     text('Read Me First', 12, `Adobe Photoshop 3.0
 
 Station copy, licensed to Meridian-9 Imaging. Assign at least 12 MB to the program or it will tell you the scratch disk is full, which it is not.

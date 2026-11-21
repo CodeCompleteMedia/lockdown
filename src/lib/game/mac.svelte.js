@@ -3,6 +3,10 @@ import { ui } from './state.svelte.js';
 import { keysDown } from './engine.js';
 import { sfx } from './audio.js';
 import { IMAGES } from './images.js';
+import { power } from './power.svelte.js';
+
+// Notes whose text depends on the state of the game. macfs.js names them; this writes them.
+const NOTES = { interlock: () => power.memo() };
 
 export const MENUBAR = 20;      // height of the menu bar; windows stay below it
 
@@ -54,6 +58,8 @@ class Mac {
     const what = node.open;
     if (node.kind === 'folder') return this.show('list:' + path, () => ({ kind: 'list', title: node.name, node, path, rect: { w: 554, h: node === ROOT_SIZED ? 560 : 260 } }));
     if (what?.text) return this.show('text:' + path, () => ({ kind: 'text', title: node.name, text: what.text, rect: { w: 400, h: 280 } }));
+    // a note is written when it is opened, so it is always about the way things are now
+    if (what?.note) { const id = 'text:' + path; this.show(id, () => ({ kind: 'text', title: node.name, text: '', rect: { w: 430, h: 330 } })); this.wins[id].text = NOTES[what.note](); return; }
     if (what?.image) return this.show('image:' + path, () => ({ kind: 'image', title: node.name, src: IMAGES[what.image], aspect: null, rect: { w: 300, h: 380 } }));
     if (what?.anim) return this.show('anim:' + path, () => {
       // the movie opens big and square, in the middle of the screen, shrunk only to fit it

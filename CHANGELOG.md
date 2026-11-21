@@ -2,6 +2,10 @@
 
 Versions are `major.minor.bug`. The rules for choosing the next number are in `CLAUDE.md`.
 
+## 0.11.0 - 2026-11-20
+
+- A memo is buried on the Macintosh's disk with clues to the Main Power release key. It narrows the key down without giving it away, and keeps up if the interlock re-keys.
+
 ## 0.10.0 - 2026-11-20
 
 - A hard reset. System > Main Power (or `shutdown` in the console) opens an interlock: crack its four-figure release code and the switch behind it cuts all power.

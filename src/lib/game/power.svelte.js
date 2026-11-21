@@ -26,6 +26,14 @@ export function mark(code, guess) {
   return { set, loose };
 }
 
+// The memo's four clues about a code, and how many of the 1296 codes share each set of them.
+const clues = c => [c.reduce((a, b) => a + b, 0), new Set(c).size, Math.sign(c[0] - c[3]), c[1] % 2].join();
+const SHARED = {};
+for (let i = 0; i < CODE_MAX ** CODE_LEN; i++) {
+  const k = clues(Array.from({ length: CODE_LEN }, (_, d) => 1 + Math.floor(i / CODE_MAX ** d) % CODE_MAX));
+  SHARED[k] = (SHARED[k] || 0) + 1;
+}
+
 /* --------------------------------------------------------------------- grid */
 // The areas of the park, four across and three down. Each breaker is wired to some of its
 // neighbours, and throwing it flips every area on its circuit as well as its own.
@@ -66,7 +74,9 @@ class Power {
   get online() { return this.live.filter(Boolean).length; }
 
   newCode() {
-    this.code = Array.from({ length: CODE_LEN }, () => 1 + Math.floor(Math.random() * CODE_MAX));
+    // only a code the memo's clues leave several candidates for: never one they give away
+    do this.code = Array.from({ length: CODE_LEN }, () => 1 + Math.floor(Math.random() * CODE_MAX));
+    while (SHARED[clues(this.code)] < 6);
     this.tries = [];
   }
   // One try at the release code. Out of tries: the interlock re-keys and the clock pays.
@@ -80,6 +90,26 @@ class Power {
     game.timerHit = true; setTimeout(() => { game.timerHit = false; }, 500);
     log('main power: interlock re-keyed after ' + TRIES + ' bad codes. Penalty: 30 s.', 'e');
     this.newCode();
+  }
+
+  // What the service memo on the Macintosh says about the current code: enough to cut the
+  // guessing down a long way, not enough to read the code off. It follows a re-key.
+  memo() {
+    const c = this.code, sum = c.reduce((a, b) => a + b, 0), kinds = new Set(c).size;
+    const ends = c[0] === c[3] ? 'the same figure' : c[0] < c[3] ? 'first is the lower' : 'first is the higher';
+    return `MAIN POWER INTERLOCK
+service memo, kept off the workstation on purpose
+
+The release key is four figures, each from 1 to ${CODE_MAX}. I am not writing the key down anywhere. These are the check values the panel prints for the key it is holding now:
+
+  All four added together: ${sum}
+  Different figures in it: ${kinds === CODE_LEN ? 'all four differ' : kinds === 1 ? 'one figure, four times' : kinds + ' (something repeats)'}
+  First against last: ${ends}
+  Second figure: ${c[1] % 2 ? 'odd' : 'even'}
+
+Eight bad keys and the panel re-keys itself. The check values change with it, so close this and open it again.
+
+Green lamp: right figure, right place. Yellow: right figure, wrong place. Work from the lamps, not from luck.`;
   }
 
   neighbours(i) { return this.links.filter(l => l.includes(i)).map(l => l[0] === i ? l[1] : l[0]); }
