@@ -9,6 +9,9 @@
   import MacIcon from './MacIcon.svelte';
   import MacList from './MacList.svelte';
   import MacKing from './MacKing.svelte';
+  import logo from '#lib/assets/macMenuLogo.png';
+  import appMenu from '#lib/assets/macAppMenu.png';
+  import helpMenu from '#lib/assets/macHelpMenu.png';
 
   tallWindowFor(HD);
   const count = n => n === 1 ? '1 item' : n + ' items';
@@ -89,11 +92,13 @@
       {:else if w.kind === 'image'}
         <MacWindow {id} plain aspect={w.aspect}><img class="pic" src={w.src} alt={w.title} draggable="false" onload={e => { w.aspect = e.currentTarget.naturalWidth / e.currentTarget.naturalHeight; }}></MacWindow>
       {:else}
-        <MacWindow {id} plain><MacKing /></MacWindow>
+        <MacWindow {id} plain aspect={1}><MacKing open={w.open} /></MacWindow>
       {/if}
     {/each}
 
     <div class="menubar">
+      <!-- the corner mark, where the system menu would be: a 16 by 16 space -->
+      <img class="logo" src={logo} alt="" draggable="false">
       <div class="menus">
         {#each Object.keys(MENUS) as name (name)}
           <div class="menu" class:on={menu === name} onpointerdown={() => { menu = menu === name ? null : name; }} onpointerenter={() => { if (menu) menu = name; }}>
@@ -109,8 +114,8 @@
         {/each}
       </div>
       <!-- the help menu and the application menu, at the right as on the real thing -->
-      <svg width="16" height="16" viewBox="0 0 16 16"><rect x="1.5" y="1.5" width="13" height="13" rx="3" fill="#ddd" stroke="#000"/><text x="8" y="12.5" text-anchor="middle" font-family="Charcoal,Chicago,Geneva,Verdana,sans-serif" font-weight="bold" font-size="12" fill="#000" stroke="#ffee55" stroke-width="2.5" paint-order="stroke">?</text></svg>
-      <svg width="16" height="16" viewBox="0 0 16 16" shape-rendering="crispEdges"><path d="M3.5 1.5h9v11h-9z" fill="#ddd" stroke="#000"/><rect x="5.5" y="3.5" width="5" height="4" fill="#99aaff" stroke="#000"/><path d="M8 10.5h3" stroke="#000"/><path d="M2.5 12.5h11v2h-11z" fill="#bbb" stroke="#000"/></svg>
+      <img class="logo app" src={helpMenu} alt="" draggable="false">
+      <img class="logo app" src={appMenu} alt="" draggable="false">
     </div>
 
     {#if mac.alert}
@@ -126,14 +131,21 @@
 </div>
 
 <style>
+  /* Two pixel fonts by Giles Booth (CC BY, see assets/fonts/README.md) stand in for Geneva 9 and
+     Chicago 12. They are drawn on a 16-unit grid, so 16px is the only size at which one font
+     pixel is one screen pixel: keep it at 16px, weight normal, with even line heights. */
+  @font-face{font-family:FindersKeepers;src:url('../../assets/fonts/FindersKeepers.woff2') format('woff2');font-display:block}
+  @font-face{font-family:ChiKareGo2;src:url('../../assets/fonts/ChiKareGo2.woff2') format('woff2');font-display:block}
   /* the tube: black behind, the picture with slightly rounded corners in front */
   #mac{position:absolute;left:0;top:0;width:100vw;height:100%;background:#000;color:#000;
-    font:12px Geneva,Verdana,sans-serif;-webkit-font-smoothing:none;font-smooth:never;font-kerning:none;cursor:default}
+    font:16px/12px FindersKeepers,Geneva,sans-serif;font-synthesis:none;-webkit-font-smoothing:none;font-smooth:never;font-kerning:none;text-rendering:optimizeSpeed;cursor:default}
   /* the checkerboard itself is set from the script above; the grey shows until it is */
   .screen{position:absolute;inset:0;border-radius:7px;overflow:hidden;background-color:#808080;image-rendering:pixelated}
-  .menubar{position:absolute;left:0;right:0;top:0;height:20px;z-index:100000;display:flex;align-items:center;gap:12px;padding:0 16px 0 30px;background:#fff;border-bottom:1px solid #000}
+  .menubar{position:absolute;left:0;right:0;top:0;height:20px;z-index:100000;display:flex;align-items:center;gap:12px;padding:0 16px 0 14px;background:#fff;border-bottom:1px solid #000}
+  .logo{flex:none;width:16px;height:16px;object-fit:contain;align-self:flex-start;margin:2px -6px 0 0}
+  .logo.app{margin-right:0}
   .menus{flex:1;display:flex;align-self:stretch}
-  .menu{position:relative;display:flex;align-items:center;padding:0 9px;font:bold 12px Charcoal,Chicago,Geneva,Verdana,sans-serif}
+  .menu{position:relative;display:flex;align-items:center;padding:0 9px;font:16px/16px ChiKareGo2,Charcoal,Chicago,Geneva,sans-serif}
   .menu.on{background:#000;color:#fff}
   .drop{position:absolute;left:0;top:19px;min-width:150px;padding:1px 0;background:#fff;color:#000;border:1px solid #000;box-shadow:1px 1px 0 #000}
   .item{padding:1px 14px;white-space:nowrap}
@@ -142,18 +154,18 @@
   hr{margin:2px 0;border:0;border-top:1px dotted #777}
   .deskicons{position:absolute;right:8px;top:42px;display:flex;flex-direction:column;align-items:center;gap:14px}
   .trash{position:absolute;right:26px;bottom:20px}
-  .info{height:17px;display:flex;align-items:center;justify-content:space-between;padding:0 6px 0 10px;border-bottom:1px dotted #000}
-  .cols{height:17px;display:flex;align-items:center;padding-right:4px}
+  .info{height:18px;display:flex;align-items:center;justify-content:space-between;padding:0 6px 0 10px;border-bottom:1px dotted #000}
+  .cols{height:18px;display:flex;align-items:center;padding-right:4px}
   .c-name{flex:0 0 235px;padding-left:38px;box-sizing:border-box}
   .c-size{flex:0 0 56px;text-align:right}
   .c-kind{flex:1;padding-left:10px}
-  .list{min-height:100%;padding:3px 0;font:10px Geneva,Verdana,sans-serif}
-  .text{padding:8px 10px;white-space:pre-wrap;font:12px/16px Geneva,Verdana,sans-serif;user-select:text;-webkit-user-select:text}
+  .list{min-height:100%;padding:3px 0}
+  .text{padding:8px 10px;white-space:pre-wrap;font:16px/16px ChiKareGo2,Charcoal,Chicago,Geneva,sans-serif;user-select:text;-webkit-user-select:text}
   .pic{display:block;width:100%;height:100%;min-height:0;object-fit:contain;image-rendering:auto}
   /* the alert box: nothing else answers until it is dismissed */
   .veil{position:absolute;inset:0;z-index:200000;display:flex;align-items:center;justify-content:center}
   .alert{width:370px;max-width:calc(100% - 20px);display:grid;grid-template-columns:32px 1fr;gap:10px 16px;padding:16px 18px 14px;background:#fff;border:1px solid #000;outline:2px solid #fff;box-shadow:0 0 0 3px #000,0 0 0 4px #fff,0 0 0 5px #000}
-  .alert p{margin:0;font:bold 12px/16px Charcoal,Chicago,Geneva,Verdana,sans-serif}
-  .ok{grid-column:2;justify-self:end;min-width:58px;padding:2px 0;text-align:center;font:bold 12px Charcoal,Chicago,Geneva,Verdana,sans-serif;border:1px solid #000;border-radius:5px;box-shadow:0 0 0 2px #fff,0 0 0 4px #000;margin:4px 4px 2px 0;cursor:pointer}
+  .alert p{margin:0;font:16px/16px ChiKareGo2,Charcoal,Chicago,Geneva,sans-serif}
+  .ok{grid-column:2;justify-self:end;min-width:58px;padding:2px 0;text-align:center;font:16px/16px ChiKareGo2,Charcoal,Chicago,Geneva,sans-serif;border:1px solid #000;border-radius:5px;box-shadow:0 0 0 2px #fff,0 0 0 4px #000;margin:4px 4px 2px 0;cursor:pointer}
   .ok:active{background:#000;color:#fff}
 </style>

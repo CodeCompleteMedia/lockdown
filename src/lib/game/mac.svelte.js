@@ -55,7 +55,11 @@ class Mac {
     if (node.kind === 'folder') return this.show('list:' + path, () => ({ kind: 'list', title: node.name, node, path, rect: { w: 554, h: node === ROOT_SIZED ? 560 : 260 } }));
     if (what?.text) return this.show('text:' + path, () => ({ kind: 'text', title: node.name, text: what.text, rect: { w: 400, h: 280 } }));
     if (what?.image) return this.show('image:' + path, () => ({ kind: 'image', title: node.name, src: IMAGES[what.image], aspect: null, rect: { w: 300, h: 380 } }));
-    if (what?.anim) return this.show('anim:' + path, () => ({ kind: 'anim', title: node.name, rect: { w: 260, h: 250 } }));
+    if (what?.anim) return this.show('anim:' + path, () => {
+      // the movie opens big and square, in the middle of the screen, shrunk only to fit it
+      const s = this.size(), w = Math.round(Math.max(180, Math.min(780, s.w - 16, s.h - 52))), h = w + 18;
+      return { kind: 'anim', title: node.name, rect: { w, h, x: Math.max(4, Math.round((s.w - w) / 2)), y: Math.max(24, Math.round(20 + (s.h - 20 - h) / 2)) } };
+    });
     sfx.err();
     this.alert = node.kind === 'application program'
       ? `The application program “${node.name}” could not be opened, because there is not enough memory available.`

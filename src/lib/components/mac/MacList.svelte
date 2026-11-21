@@ -33,7 +33,7 @@
 {/each}
 
 <style>
-  .line{display:flex;align-items:center;height:19px;white-space:nowrap}
+  .line{display:flex;align-items:center;height:20px;white-space:nowrap}
   .name{flex:0 0 235px;display:flex;align-items:center;overflow:hidden}
   .tri{flex:none;width:9px;margin-right:6px;cursor:pointer}
   .tri.down{transform:rotate(90deg)}

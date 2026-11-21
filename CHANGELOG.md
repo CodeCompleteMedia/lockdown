@@ -2,6 +2,15 @@
 
 Versions are `major.minor.bug`. The rules for choosing the next number are in `CLAUDE.md`.
 
+## 0.9.0 - 2026-11-20
+
+- The Macintosh's text is far easier to read. Its menus, window titles, file lists and icon names are now drawn in pixel fonts modelled on the originals (Chicago and Geneva), so every letter is sharp without zooming in.
+- Notes opened on the Macintosh use the larger, heavier of the two fonts.
+- The Macintosh now looks the same in every browser and on every system.
+- Rows in its file lists are a touch taller.
+- THE KING on the Macintosh's disk is now a short movie with sound, in place of the old animation. It opens large, in the middle of the screen, and follows the Sound setting.
+- A small logo sits at the left end of the Macintosh's menu bar, and the two icons at its right end are new.
+
 ## 0.8.0 - 2026-11-19
 
 - The Macintosh desktop is redrawn: a new background pattern, and every icon, button and scroll bar drawn fresh instead of taken from a photograph.

@@ -28,7 +28,7 @@
 <style>
   .icon{display:flex;flex-direction:column;align-items:center;gap:3px;width:max-content;cursor:default}
   svg{display:block}
-  span{background:#fff;color:#000;padding:0 3px;font:10px/12px Geneva,Verdana,sans-serif;white-space:nowrap}
+  span{background:#fff;color:#000;padding:0 3px;white-space:nowrap}
   .sel span{background:#000;color:#fff}
   .sel svg{filter:brightness(.5)}
 </style>

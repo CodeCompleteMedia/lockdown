@@ -38,7 +38,7 @@
   $effect(() => { if (aspect && plain) win.rect.h = (win.rect.w - FRAME_W) / aspect + FRAME_H; });
 
   /* ------------------------------------------------------------ scrolling */
-  const LINE = 19, ARROW = 15, THUMB = 16;
+  const LINE = 20, ARROW = 15, THUMB = 16;
   let content = $state(), inner = $state();
   let top = $state(0), max = $state(0), view = $state(0);
   function measure() { if (!content) return; top = content.scrollTop; view = content.clientHeight; max = Math.max(0, content.scrollHeight - view); }
@@ -114,12 +114,12 @@
   .shade .title{border-bottom:0}
   .focused .title{background:#eee;box-shadow:inset 0 1px 0 #ccccdd,inset 0 -1px 0 #aaa}
   .stripes{position:absolute;left:1px;right:1px;top:3px;height:11px;background:repeating-linear-gradient(#777 0 1px,transparent 1px 2px)}
-  .title span{position:relative;padding:0 7px;font:bold 12px/15px Charcoal,Chicago,Geneva,Verdana,sans-serif;color:#838383;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100% - 50px)}
+  .title span{position:relative;padding:0 7px;font:16px/16px ChiKareGo2,Charcoal,Chicago,Geneva,sans-serif;color:#838383;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100% - 50px)}
   .focused .title span{background:#eee;color:#000}
   .box{position:absolute;top:2px;cursor:pointer}
   .box.l{left:7px} .box.r{right:7px}
 
-  .header{flex:none;border-bottom:3px double #000;font:10px Geneva,Verdana,sans-serif;white-space:nowrap;overflow:hidden}
+  .header{flex:none;border-bottom:3px double #000;white-space:nowrap;overflow:hidden}
   .mid{flex:1;min-height:0;display:flex}
   .content{flex:1;min-width:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
   .content::-webkit-scrollbar{display:none}
