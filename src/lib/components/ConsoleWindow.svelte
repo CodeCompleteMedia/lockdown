@@ -13,7 +13,7 @@
   }
 </script>
 
-<Window id="conwin" title="Console — m9-ops" minW={300}>
+<Window id="conwin" title="Central Park Control Console — m9-ops" minW={300}>
   <div id="conout" class="term inset" bind:this={refs.conout}>{#each lines as l (l.id)}<div class={l.cls}>{l.msg}</div>{/each}</div>
   <div class="row conrow">
     <span>m9-ops%</span>

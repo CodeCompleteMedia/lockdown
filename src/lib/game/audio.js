@@ -47,5 +47,8 @@ export const sfx = {
   tick: () => beep(1760, .025, 'square', .06),
   alarm: () => beep(310, .16, 'sawtooth', .13, 0, 240),
   win: () => [523, 659, 784, 1047, 784, 1047, 1319].forEach((f, i) => beep(f, i === 6 ? .5 : .13, 'square', .13, i * .12)),
+  breaker: () => { beep(90, .09, 'square', .2); beep(1500, .02, 'square', .08); },
+  powerDown: () => { beep(520, 1.4, 'sawtooth', .2, 0, 28); beep(60, .5, 'square', .2, 0, 30); },
+  powerUp: () => { beep(40, 1.6, 'sawtooth', .16, 0, 420); [392, 523, 659, 784].forEach((f, i) => beep(f, .16, 'square', .1, 1.5 + i * .11)); },
   lose: () => { beep(440, 1.6, 'sawtooth', .2, 0, 40); beep(446, 1.6, 'square', .1, 0, 38); },
 };

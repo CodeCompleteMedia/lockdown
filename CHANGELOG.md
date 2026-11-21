@@ -2,6 +2,17 @@
 
 Versions are `major.minor.bug`. The rules for choosing the next number are in `CLAUDE.md`.
 
+## 0.10.0 - 2026-11-20
+
+- A hard reset. System > Main Power (or `shutdown` in the console) opens an interlock: crack its four-figure release code and the switch behind it cuts all power.
+- With the power out, both screens go black. You can still look from one to the other. After a while the workstation shows two words and a cursor.
+- The Macintosh then shows the power distribution board: switch every area of the park back on, where each breaker also flips the areas wired to it. The wiring is different every time. When all twelve are online, both machines come back.
+- The countdown is stopped while the power is out.
+- The file system navigator now comes up only after the power has been reset. Until then the workstation has its console and tools but no file system, and the countdown does not start until the navigator does.
+- The calculator, the system monitor and a large 3D chess board are already open on the workstation when you log in, laid out across the desk.
+- The game opens with a plain Log In prompt. The WHITEOUT briefing now appears when the navigator comes up, and the countdown starts when you dismiss it.
+- The workstation's console is now called the Central Park Control Console, in its window title, the Desktop and System menus, and Help.
+
 ## 0.9.0 - 2026-11-20
 
 - The Macintosh's text is far easier to read. Its menus, window titles, file lists and icon names are now drawn in pixel fonts modelled on the originals (Chicago and Geneva), so every letter is sharp without zooming in.

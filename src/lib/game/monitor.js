@@ -70,7 +70,7 @@ export function createMonitor() {
       const now = performance.now(), dt = Math.max(1, now - last), d = {};
       for (const k in stats) d[k] = stats[k] - prev[k];
       prev = { ...stats }; last = now;
-      const playing = game.mode === 'play' && !game.paused, contact = playing && game.drain > 1;
+      const playing = game.mode === 'play' && !game.paused && game.fsnav, contact = playing && game.drain > 1;
 
       // CPU0 is this page's main thread: time in the engine's frame, split at the draw.
       load0 += (d.update / dt - load0) * .5; draw0 += (d.render / dt - draw0) * .5;

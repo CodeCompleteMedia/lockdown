@@ -17,6 +17,8 @@
   import Chess3DWindow from '#lib/components/Chess3DWindow.svelte';
   import Calculator from '#lib/components/Calculator.svelte';
   import ImageViewer from '#lib/components/ImageViewer.svelte';
+  import PowerWindow from '#lib/components/PowerWindow.svelte';
+  import Blackout from '#lib/components/Blackout.svelte';
   import Menu from '#lib/components/Menu.svelte';
   import Dialog from '#lib/components/Dialog.svelte';
 
@@ -49,9 +51,11 @@
     <Chess3DWindow />
     <Calculator />
     <ImageViewer />
+    <PowerWindow />
 
     <Menu />
     <Dialog />
+    <Blackout />
   </div>
 </div>
 <MonitorEdge />

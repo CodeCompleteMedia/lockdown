@@ -12,15 +12,17 @@ export function attachEngine(e) { engine = e; }
 export const press = fn => e => { sfx.click(); e.currentTarget.blur(); fn(); };
 
 /* ------------------------------------------------------------------ flight */
-export const flyToDir = n => engine.flyToDir(n);
+// The navigator and everything that works through it wait for the power reset.
+const live = () => game.mode === 'play' && game.fsnav;
+export const flyToDir = n => { if (live()) engine.flyToDir(n); };
 export const flyHome = () => engine.flyToDir(ROOT);
 export const flyUp = () => engine.flyToDir(game.cwd.parent || ROOT);
-export const overview = () => engine.overview();
+export const overview = () => { if (live()) engine.overview(); };
 export const cancelTween = () => engine?.cancelTween();
 export const inPlay = fn => () => { if (game.mode === 'play') fn(); };
 
 export function goTo(r) {
-  if (game.mode !== 'play') return;
+  if (!live()) return;
   if (r.file) { select(r.file); flyToDir(r.file.dir); } else flyToDir(r.dir);
 }
 
@@ -41,7 +43,7 @@ export const closeViewer = () => ui.close('viewer');
 export function markRead(f) { f.read = true; engine.dimRead(f); }
 
 export function openFile(f) {
-  if (game.mode !== 'play' || !f) return;
+  if (!live() || !f) return;
   stats.iget++;
   if (f.type === 'key') {
     if (!game.keys.includes(f.who)) game.keys.push(f.who);
@@ -70,7 +72,7 @@ export function openFile(f) {
   if (!f.read) { markRead(f); log('read ' + f.path); }
 }
 export function execFile(f) {
-  if (game.mode !== 'play' || !f) return;
+  if (!live() || !f) return;
   stats.exec++;
   if (f.type !== 'cmd') { sfx.err(); log(`${f.name}: not executable`, 'e'); return; }
   if (f.dead) { sfx.err(); log(`${f.name}: build quarantined`, 'e'); return; }
@@ -146,15 +148,39 @@ export function fatal() {
 }
 
 export function boot() {
+  log('m9-ops ready');
+  ui.showDialog('m9-ops: login', `<h2>MERIDIAN-9 &middot; OPS TERMINAL 4</h2>
+  <p>Operator session. Authorised staff only.</p>
+  <p class="version">Lockdown v${__APP_VERSION__}</p>`, 'Log In', () => {
+    initAudio(); sfx.open();
+    game.mode = 'play';
+    log('fsnav: file system navigator offline.', 'e');
+    // What was left running on the desk: the calculator, the system monitor and the chess
+    // board, where the owner arranged them (on a 1488 by 953 screen). On a smaller screen
+    // each is moved in just far enough to stay in view. Opened back to front.
+    for (const [id, x, y, w, h] of [['calc', 20, 583, 240, 301], ['osview', 71, 245, 400, null], ['chess3d', 620, 52, 789, 616]]) {
+      const fit = (at, size, room) => Math.max(0, Math.min(at, room - size - 8));
+      ui.wins[id].rect = { x: fit(x, w, innerWidth), y: fit(y, h ?? 370, innerHeight), w, h };
+      ui.open(id);
+    }
+    log('hint: System > Main Power, or "shutdown" in the console', 'w');
+  });
+}
+
+// The machines are back after the power reset: the navigator comes up, and with it the
+// WHITEOUT briefing. The clock starts when the briefing is dismissed.
+export function fsnavOnline() {
+  if (game.fsnav) return;
+  game.fsnav = true; game.paused = true;
+  ui.open('main');
   log('m9-ops fsnav 2.3 ready');
   ui.showDialog('secd: WHITEOUT armed', `<h2>MERIDIAN-9 &middot; OPS TERMINAL 4</h2>
   <p class="warn">Wing C has lost containment. Sterilant flood in 05:00. The bulkheads are sealed and you are on the wrong side of them.</p>
   <p>The security override is somewhere on this file system. It will not run without three staff <b>signature keys</b>, and of the four builds staged, only one is signed. The logs and the mail spool say which, and where the keys were left.</p>
   <p>Stay clear of the red <b>watchdog</b>. Inside its ring the clock runs three times as fast.</p>
-  ${HELP}
-  <p class="version">Lockdown v${__APP_VERSION__}</p>`, 'Log In', () => {
-    initAudio(); sfx.open();
-    game.mode = 'play'; engine.resetClock();
+  ${HELP}`, 'Begin', () => {
+    sfx.open();
+    game.paused = false; engine.resetClock();
     engine.spawnWatchdog(nodes['/sys/sec/vault']);
     log('WHITEOUT armed. T-05:00', 'e');
     log('hint: open /README.1st', 'w');

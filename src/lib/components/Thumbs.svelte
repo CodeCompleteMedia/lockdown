@@ -4,12 +4,12 @@
   import { toggleConsole, toggleSys } from '#lib/game/desktop.js';
 
   // Console and System always have a tile. Other windows get one while they are minimized.
-  const ICONS = [['main', 'fsnav', 'grid'], ['viewer', 'view', 'page'], ['find', 'Find', 'list'], ['osview', 'osview', 'bars'], ['chess', 'chess', 'board'], ['chess3d', 'chess 3D', 'board'], ['calc', 'calc', 'keys'], ['imgview', 'image', 'page']];
+  const ICONS = [['power', 'power', 'keys'], ['main', 'fsnav', 'grid'], ['viewer', 'view', 'page'], ['find', 'Find', 'list'], ['osview', 'osview', 'bars'], ['chess', 'chess', 'board'], ['chess3d', 'chess 3D', 'board'], ['calc', 'calc', 'keys'], ['imgview', 'image', 'page']];
   const icons = $derived(ICONS.filter(([id]) => ui.wins[id].open && ui.wins[id].min));
 </script>
 
 <div id="thumbs">
-  <button class="thumb" class:on={ui.shown('conwin')} title="Console" onclick={press(toggleConsole)}>
+  <button class="thumb" class:on={ui.shown('conwin')} title="Central Park Control Console" onclick={press(toggleConsole)}>
     <span class="pic"><svg viewBox="0 0 70 54" preserveAspectRatio="none">
       <defs><linearGradient id="thumb-con" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#241733"/><stop offset=".55" stop-color="#5a4a6c"/><stop offset="1" stop-color="#8f8296"/></linearGradient></defs>
       <rect width="70" height="54" fill="url(#thumb-con)"/>

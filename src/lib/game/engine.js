@@ -216,7 +216,7 @@ export function createEngine(canvas, view, hooks) {
     const began = performance.now(), gap = now - last;
     if (gap > 34) stats.late += Math.min(gap, 1000) - 16.7;
     const dt = Math.max(0, Math.min(.05, gap / 1000)); last = now;
-    const playing = game.mode === 'play' && !game.paused;
+    const playing = game.mode === 'play' && !game.paused && game.fsnav;
 
     if (playing) {
       // flight

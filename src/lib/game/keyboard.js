@@ -4,11 +4,13 @@ import { game, ui } from './state.svelte.js';
 import { keysDown } from './engine.js';
 import { activate, cancelTween, closeViewer, flyToDir, flyUp, overview } from './actions.js';
 import { mac } from './mac.svelte.js';
+import { power } from './power.svelte.js';
 
 const MOVE = ['KeyW', 'KeyA', 'KeyS', 'KeyD', 'KeyR', 'KeyF', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'];
 
 function onKeyDown(e) {
   if (e.target.tagName === 'INPUT') { if (e.code === 'Escape') e.target.blur(); return; }
+  if (power.dark) return;            // no power: neither machine hears the keyboard
   // on the Macintosh the keyboard belongs to that machine, not the workstation
   if (ui.monitor === 'left') {
     if (e.repeat) return;

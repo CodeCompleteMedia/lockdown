@@ -9,6 +9,8 @@
   import MacIcon from './MacIcon.svelte';
   import MacList from './MacList.svelte';
   import MacKing from './MacKing.svelte';
+  import MacPower from './MacPower.svelte';
+  import { power } from '#lib/game/power.svelte.js';
   import logo from '#lib/assets/macMenuLogo.png';
   import appMenu from '#lib/assets/macAppMenu.png';
   import helpMenu from '#lib/assets/macHelpMenu.png';
@@ -117,6 +119,8 @@
       <img class="logo app" src={helpMenu} alt="" draggable="false">
       <img class="logo app" src={appMenu} alt="" draggable="false">
     </div>
+
+    {#if power.dark}<MacPower />{/if}
 
     {#if mac.alert}
       <div class="veil">

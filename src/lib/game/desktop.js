@@ -4,6 +4,7 @@ import { ROOT, nodeList, TYPES, dirPath, search, resolve } from './fs.js';
 import { game, ui, refs, log, fmt } from './state.svelte.js';
 import { sfx } from './audio.js';
 import { stats } from './stats.js';
+import { power } from './power.svelte.js';
 import { toggleSecondDisplay, toggleFullScreen } from '#lib/second-display.js';
 import { select, openFile, execFile, markRead, flyToDir, flyHome, flyUp, overview, inPlay, toggleSound, showHelp, pausedDialog } from './actions.js';
 
@@ -31,6 +32,7 @@ find <text>  search names and paths
 gr_osview    open the system monitor
 chess        play chess (chess3d for the 3D board)
 calc         open the calculator
+shutdown     open the main power interlock
 clear        clear this window`;
 
 export function shell(line) {
@@ -44,6 +46,8 @@ export function shell(line) {
   if (cmd === 'calc') return openCalc();
   if (cmd === 'clear') { ui.conCleared = game.logs.at(-1).id; return; }
   if (game.mode !== 'play') return log('no active session', 'e');
+  if (cmd === 'shutdown') { log(power.done ? 'shutdown: reset already carried out. Main bus live.' : 'shutdown: main power is behind an interlock. Opening it.', 'w'); return openPower(); }
+  if (!game.fsnav && ['pwd', 'find', 'ls', 'cd', 'cat', 'open', 'run'].includes(cmd)) { sfx.err(); return log(cmd + ': file system offline. Reset main power first.', 'e'); }
   if (cmd === 'pwd') return log(game.cwd.path);
   if (cmd === 'find') {
     if (!arg) return log('usage: find <text>', 'e');
@@ -92,6 +96,7 @@ export const openSys = () => ui.open('sysman');
 export const openOsview = () => ui.open('osview');
 export const openChess = () => { ui.open('chess'); refs.chessin?.focus(); };
 export const openChess3D = () => ui.open('chess3d');
+export const openPower = () => { ui.open('power'); refs.power?.focus(); };
 export const openCalc = () => { ui.open('calc'); refs.calc?.focus(); };
 export const toggleConsole = () => ui.shown('conwin') ? ui.close('conwin') : openConsole();
 export const toggleSys = () => ui.shown('sysman') ? ui.close('sysman') : openSys();
@@ -119,8 +124,8 @@ const MENUS = {
     ['Parent Directory', inPlay(flyUp)],
     ['Overview', inPlay(overview)],
     null,
-    ['File System Navigator', () => ui.open('main')],
-    ['Open Console', openConsole],
+    ['File System Navigator', () => ui.open('main'), !game.fsnav],
+    ['Open Central Park Control Console', openConsole],
     [ui.dual ? 'Bring The Macintosh Back' : 'Macintosh On Second Display', toggleSecondDisplay],
     ['Full Screen', () => toggleFullScreen(document.body)],
     null,
@@ -147,7 +152,8 @@ const MENUS = {
   system: () => [
     ['System Manager', openSys],
     ['System Monitor', openOsview],
-    ['Console', openConsole],
+    ['Central Park Control Console', openConsole],
+    ['Main Power…', inPlay(openPower)],
     null,
     ['Sound: ' + (game.soundOn ? 'On' : 'Off'), toggleSound],
     ['Restart Session', () => location.reload()],
@@ -156,7 +162,7 @@ const MENUS = {
     ['Controls', showHelp],
     ['About This Desktop', () => pausedDialog('about', `<h2>M9-OPS DESKTOP</h2>
       <p>The <b>Toolchest</b> is the way into everything on this terminal: <b>Desktop</b> moves the navigator, <b>Selected</b> acts on the file you have picked, <b>Find</b> searches the file system, and <b>System</b> opens the manager and the console.</p>
-      <p>The console takes <b>ls</b>, <b>cd</b>, <b>pwd</b>, <b>cat</b>, <b>open</b>, <b>run</b> and <b>find</b>. It shares its current directory with the 3D view.</p>
+      <p>The Central Park Control Console takes <b>ls</b>, <b>cd</b>, <b>pwd</b>, <b>cat</b>, <b>open</b>, <b>run</b> and <b>find</b>. It shares its current directory with the 3D view.</p>
       <p>Lockdown version <b>${__APP_VERSION__}</b>.</p>
       <p>The clock is stopped while this window is open.</p>`)],
   ],

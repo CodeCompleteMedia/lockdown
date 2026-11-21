@@ -20,6 +20,7 @@ class Game {
   drain = $state(1);                 // clock multiplier; 3 while a watchdog has contact
   alarm = $state(false);
   paused = $state(false);
+  fsnav = $state(false);             // the file system navigator is up: not until the power has been reset
   soundOn = $state(true);
   timerHit = $state(false);
   watchdogs = $state(0);
@@ -44,7 +45,7 @@ export function log(msg, cls = '') {
 const win = (x, y, w) => ({ open: false, min: false, max: false, z: 20, rect: { x, y, w, h: null } });
 class Desktop {
   wins = $state({
-    main: { open: true, min: false, max: false, z: 10, rect: null },
+    main: { open: false, min: false, max: false, z: 10, rect: null },
     viewer: win(190, 150, 520),
     find: win(200, 140, 430),
     conwin: win(240, 180, 580),
@@ -54,6 +55,7 @@ class Desktop {
     chess3d: win(700, 120, 470),
     calc: win(150, 300, 240),
     imgview: win(420, 60, 330),
+    power: win(360, 110, 400),
   });
   zTop = 20;
   dual = $state(false);              // the Macintosh is in a window of its own, on a second display
